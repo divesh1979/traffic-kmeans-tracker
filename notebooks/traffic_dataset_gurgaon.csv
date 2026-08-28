@@ -1,0 +1,35 @@
+SegmentID,SegmentName,Volume,Speed,Density,TimeOfDay,DayOfWeek,Seasonality,Precipitation,Capacity,ControlDevices,VehicleMix
+S1,Delhi-Gurgaon Expressway (Sirhaul to Cyber City),2850,38,75,17,2,1,0,5500,0,18
+S2,NH-48 Cyber City to IFFCO Chowk,2600,32,81,17,2,1,0,4400,0,20
+S3,NH-48 Main Line (IFFCO Chowk to Rajiv Chowk),2750,28,98,17,2,1,0,4400,0,22
+S4,NH-48 Expressway (Rajiv Chowk to Hero Honda Chowk),2900,22,131,17,2,1,1,4400,0,25
+S5,NH-48 Southern Arterial (Hero Honda to Kherki Daula Toll),3100,18,172,17,2,1,0,4400,3,35
+S6,Cyber City Rapid Metro Corridor,1650,42,39,17,2,1,0,3300,2,12
+S7,Golf Course Road 16-Lane Expressway,1950,58,33,17,2,1,0,4400,0,10
+S8,Golf Course Extension Corridor,1800,48,37,17,2,1,0,3300,1,15
+S9,Sohna Road Spine (Rajiv Chowk to Subhash Chowk),2200,25,88,17,2,1,0,3300,2,18
+S10,Sohna Road Commercial Belt (Subhash Chowk to Sec 48),2050,28,73,17,2,1,0,3300,2,20
+S11,HUDA Metro Connector (IFFCO to Millennium City Centre),1400,35,40,17,2,1,0,2200,2,8
+S12,Millennium Metro to Subhash Chowk Arterial,1600,38,42,17,2,1,0,2200,2,10
+S13,Southern Peripheral Road (SPR East-West Bypass),1750,62,28,17,2,1,0,3300,1,16
+S14,SPR Extension to Kherki Daula Toll,1900,68,27,17,2,1,0,3300,0,22
+S15,Dwarka Expressway Northern Link,1500,75,20,17,2,1,0,4400,0,14
+S16,Dwarka Expressway to Hero Honda Link,1650,65,25,17,2,1,0,3300,1,15
+S1,Delhi-Gurgaon Expressway (Sirhaul to Cyber City),1200,72,16,2,2,1,0,5500,0,15
+S2,NH-48 Cyber City to IFFCO Chowk,1100,68,16,2,2,1,0,4400,0,18
+S3,NH-48 Main Line (IFFCO Chowk to Rajiv Chowk),1050,65,16,2,2,1,0,4400,0,20
+S4,NH-48 Expressway (Rajiv Chowk to Hero Honda Chowk),1150,70,16,2,2,1,0,4400,0,22
+S5,NH-48 Southern Arterial (Hero Honda to Kherki Daula Toll),1400,60,23,2,2,1,0,4400,3,38
+S6,Cyber City Rapid Metro Corridor,450,48,9,2,2,1,0,3300,2,8
+S7,Golf Course Road 16-Lane Expressway,650,68,9,2,2,1,0,4400,0,8
+S8,Golf Course Extension Corridor,550,62,8,2,2,1,0,3300,1,12
+S9,Sohna Road Spine (Rajiv Chowk to Subhash Chowk),750,48,15,2,2,1,0,3300,2,14
+S10,Sohna Road Commercial Belt (Subhash Chowk to Sec 48),700,50,14,2,2,1,0,3300,2,15
+S11,HUDA Metro Connector (IFFCO to Millennium City Centre),350,42,8,2,2,1,0,2200,2,5
+S12,Millennium Metro to Subhash Chowk Arterial,400,45,8,2,2,1,0,2200,2,6
+S13,Southern Peripheral Road (SPR East-West Bypass),600,70,8,2,2,1,0,3300,1,12
+S14,SPR Extension to Kherki Daula Toll,700,75,9,2,2,1,0,3300,0,18
+S15,Dwarka Expressway Northern Link,500,85,5,2,2,1,0,4400,0,10
+S16,Dwarka Expressway to Hero Honda Link,550,72,7,2,2,1,0,3300,1,12
+S4,NH-48 Expressway (Rajiv Chowk to Hero Honda Chowk),3200,12,266,18,2,1,2,4400,0,28
+S10,Sohna Road Commercial Belt (Subhash Chowk to Sec 48),2400,14,171,18,2,1,2,3300,2,22

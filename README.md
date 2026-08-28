@@ -118,6 +118,9 @@ traffic-kmeans-tracker/
 ├── index.html
 ├── package.json
 ├── vite.config.js
+├── notebooks/
+│   ├── traffic_kmeans_analysis.ipynb  # Jupyter Notebook (Python ML Implementation, EDA, Elbow Method)
+│   └── traffic_dataset_gurgaon.csv     # 10-Factor Gurgaon Traffic Flow Dataset
 ├── src/
 │   ├── main.jsx
 │   ├── App.jsx
