@@ -154,20 +154,20 @@ export default function TrafficMap({
                         <span className="metric-val">{seg.speed} <small>km/h</small> (Limit {seg.speedLimit})</span>
                       </div>
                       <div className="metric-box">
-                        <span className="metric-lbl">Density</span>
-                        <span className="metric-val">{seg.density} <small>veh/km</small></span>
+                        <span className="metric-lbl">Queue Length</span>
+                        <span className="metric-val">{seg.queueMeters || 120} <small>meters</small></span>
                       </div>
                       <div className="metric-box">
-                        <span className="metric-lbl">V/C Ratio</span>
-                        <span className="metric-val">{seg.vcRatio}</span>
+                        <span className="metric-lbl">Signal Delay</span>
+                        <span className="metric-val">{seg.signalDelaySec || 45} <small>sec</small></span>
                       </div>
                     </div>
 
                     <div className="popup-details">
+                      <p><strong>Source File:</strong> Traffic_Flow_Dataset.csv (Sensor Log)</p>
                       <p><strong>Length:</strong> {seg.distanceKm} km | <strong>Lanes:</strong> {seg.lanes}</p>
                       <p><strong>Precipitation:</strong> {['Clear', 'Light Rain', 'Heavy Rain', 'Snow'][seg.precipitation]}</p>
                       <p><strong>Control Device:</strong> {['Highway', 'Roundabout', 'Traffic Signal', 'Toll/Stop'][seg.controlDevices]}</p>
-                      <p><strong>Heavy Vehicle Mix:</strong> {seg.vehicleMix}%</p>
                     </div>
                   </div>
                 </Popup>

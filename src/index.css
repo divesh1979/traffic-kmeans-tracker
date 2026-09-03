@@ -196,6 +196,26 @@ body, html {
   gap: 0.75rem;
 }
 
+.dataset-source-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 20px;
+  border: 1px solid rgba(5, 150, 105, 0.3);
+  background: rgba(5, 150, 105, 0.1);
+  color: #059669;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.dataset-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #059669;
+}
+
 .live-toggle-btn {
   display: flex;
   align-items: center;

@@ -57,6 +57,11 @@ export default function Header({ activeTab, setActiveTab, isDarkMode, setIsDarkM
       </nav>
 
       <div className="header-controls">
+        <div className="dataset-source-badge">
+          <span className="dataset-dot"></span>
+          <span>DATASET ACTIVE: <strong>Traffic_Flow_Dataset.csv (15,000 Rows)</strong></span>
+        </div>
+
         <button 
           className={`live-toggle-btn ${isLiveStreaming ? 'active' : ''}`}
           onClick={() => setIsLiveStreaming(!isLiveStreaming)}
