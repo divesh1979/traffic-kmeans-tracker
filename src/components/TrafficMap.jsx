@@ -1,27 +1,28 @@
-import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, Polyline, Marker, Popup, CircleMarker, useMap } from 'react-leaflet';
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { AlertCircle, Navigation, Gauge, Layers, Info, MapPin } from 'lucide-react';
+import { Navigation, Layers, MapPin } from 'lucide-react';
 import { CITY_NODES } from '../services/trafficDataGenerator';
+import { fetchOSRMRealStreetPolyline } from '../services/routingEngine';
 
-// Custom Leaflet Icons for Nodes
+// Custom Leaflet Pins for Nodes
 const createNodeIcon = (isStart, isTarget) => {
-  let bgColor = '#3b82f6';
+  let bgColor = '#0284c7';
   let label = 'N';
 
   if (isStart) {
-    bgColor = '#10b981';
+    bgColor = '#059669';
     label = 'A';
   } else if (isTarget) {
-    bgColor = '#ef4444';
+    bgColor = '#dc2626';
     label = 'B';
   }
 
   return L.divIcon({
     className: 'custom-node-pin',
-    html: `<div style="background-color: ${bgColor}; width: 26px; height: 26px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.5); color: #fff; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center;">${label}</div>`,
-    iconSize: [26, 26],
-    iconAnchor: [13, 13]
+    html: `<div style="background-color: ${bgColor}; width: 28px; height: 28px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.3); color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center;">${label}</div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14]
   });
 };
 
@@ -29,7 +30,7 @@ function MapViewRecenter({ bounds }) {
   const map = useMap();
   useEffect(() => {
     if (bounds && bounds.length > 0) {
-      map.fitBounds(bounds, { padding: [40, 40] });
+      map.fitBounds(bounds, { padding: [45, 45] });
     }
   }, [bounds, map]);
   return null;
@@ -47,18 +48,34 @@ export default function TrafficMap({
   activeRouteType,
   isDarkMode
 }) {
+  const [osrmRealStreetCoords, setOsrmRealStreetCoords] = useState([]);
 
-  // Node position map helper
+  // Fetch 100% Real Street Navigation Geometry from OSRM OpenStreetMap Engine
+  useEffect(() => {
+    let isMounted = true;
+    const startNode = CITY_NODES.find(n => n.id === startNodeId);
+    const targetNode = CITY_NODES.find(n => n.id === targetNodeId);
+
+    if (startNode && targetNode && startNodeId !== targetNodeId) {
+      fetchOSRMRealStreetPolyline(startNode, targetNode).then(res => {
+        if (isMounted && res && res.realStreetCoords) {
+          setOsrmRealStreetCoords(res.realStreetCoords);
+        }
+      });
+    }
+
+    return () => { isMounted = false; };
+  }, [startNodeId, targetNodeId]);
+
   const getNodePos = (id) => {
     const node = CITY_NODES.find(n => n.id === id);
-    return node ? [node.lat, node.lng] : [28.4595, 77.0325];
+    return node ? [node.lat, node.lng] : [28.4590, 77.0320];
   };
 
-  // Compute map bounds around nodes (Gurgaon Center)
-  const mapCenter = [28.4595, 77.0325];
+  const mapCenter = [28.4590, 77.0320];
   const allPositions = CITY_NODES.map(n => [n.lat, n.lng]);
 
-  // Extract polyline points for active route calculation
+  // Extract segment polyline points fallback
   const getActiveRoutePolyline = () => {
     if (!activeRouteResult) return [];
     
@@ -76,7 +93,7 @@ export default function TrafficMap({
     return polylines;
   };
 
-  const activeRouteCoords = getActiveRoutePolyline();
+  const fallbackRouteCoords = getActiveRoutePolyline();
 
   return (
     <div className="traffic-map-wrapper">
@@ -88,7 +105,7 @@ export default function TrafficMap({
       >
         <MapViewRecenter bounds={allPositions} />
         
-        {/* OpenStreetMap Detailed Street & Highway Base Tiles */}
+        {/* OpenStreetMap High-Resolution Detailed Base Tiles */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url={
@@ -103,7 +120,7 @@ export default function TrafficMap({
         {segments.map(seg => {
           const polylineCoords = seg.waypoints || [getNodePos(seg.from), getNodePos(seg.to)];
           const isSelected = selectedSegment?.id === seg.id;
-          const strokeWidth = isSelected ? 8 : (seg.lanes * 1.8 + 2);
+          const strokeWidth = isSelected ? 9 : (seg.lanes * 1.8 + 2);
 
           return (
             <React.Fragment key={seg.id}>
@@ -114,13 +131,13 @@ export default function TrafficMap({
                   pathOptions={{
                     color: '#9333ea',
                     weight: strokeWidth + 6,
-                    opacity: 0.5,
+                    opacity: 0.6,
                     dashArray: '8, 8'
                   }}
                 />
               )}
 
-              {/* Core Segment Curved Line */}
+              {/* Core Segment Line */}
               <Polyline
                 positions={polylineCoords}
                 pathOptions={{
@@ -175,21 +192,33 @@ export default function TrafficMap({
           );
         })}
 
-        {/* Highlighted Selected Route Overlay */}
-        {activeRouteCoords.map((coords, idx) => (
+        {/* 100% REAL STREET OSRM DRIVING ROUTE OVERLAY */}
+        {osrmRealStreetCoords.length > 0 ? (
           <Polyline
-            key={`route-${idx}`}
-            positions={coords}
+            positions={osrmRealStreetCoords}
             pathOptions={{
-              color: activeRouteType === 'kmeans_smart' ? '#0284c7' : activeRouteType === 'distance' ? '#e11d48' : '#d97706',
-              weight: 8,
+              color: activeRouteType === 'kmeans_smart' ? '#0284c7' : activeRouteType === 'distance' ? '#dc2626' : '#d97706',
+              weight: 9,
               opacity: 0.95,
-              dashArray: activeRouteType === 'kmeans_smart' ? '12, 8' : 'none'
+              dashArray: activeRouteType === 'kmeans_smart' ? '10, 6' : 'none'
             }}
           />
-        ))}
+        ) : (
+          fallbackRouteCoords.map((coords, idx) => (
+            <Polyline
+              key={`fallback-route-${idx}`}
+              positions={coords}
+              pathOptions={{
+                color: activeRouteType === 'kmeans_smart' ? '#0284c7' : activeRouteType === 'distance' ? '#dc2626' : '#d97706',
+                weight: 8,
+                opacity: 0.95,
+                dashArray: activeRouteType === 'kmeans_smart' ? '10, 6' : 'none'
+              }}
+            />
+          ))
+        )}
 
-        {/* City Interchange Nodes */}
+        {/* Interchange Nodes */}
         {CITY_NODES.map(node => {
           const isStart = startNodeId === node.id;
           const isTarget = targetNodeId === node.id;
@@ -230,23 +259,23 @@ export default function TrafficMap({
         <h5><Layers size={15} /> K-Means Traffic Clusters</h5>
         <div className="legend-items">
           <div className="legend-item">
-            <span className="color-dot" style={{ backgroundColor: '#10b981' }}></span>
+            <span className="color-dot" style={{ backgroundColor: '#059669' }}></span>
             <span>Free Flow</span>
           </div>
           <div className="legend-item">
-            <span className="color-dot" style={{ backgroundColor: '#eab308' }}></span>
+            <span className="color-dot" style={{ backgroundColor: '#d97706' }}></span>
             <span>Moderate Traffic</span>
           </div>
           <div className="legend-item">
-            <span className="color-dot" style={{ backgroundColor: '#f97316' }}></span>
+            <span className="color-dot" style={{ backgroundColor: '#ea580c' }}></span>
             <span>Heavy Bottleneck</span>
           </div>
           <div className="legend-item">
-            <span className="color-dot" style={{ backgroundColor: '#ef4444' }}></span>
+            <span className="color-dot" style={{ backgroundColor: '#dc2626' }}></span>
             <span>Critical Gridlock</span>
           </div>
           <div className="legend-item">
-            <span className="color-dot" style={{ backgroundColor: '#a855f7' }}></span>
+            <span className="color-dot" style={{ backgroundColor: '#9333ea' }}></span>
             <span>Irregular Anomaly</span>
           </div>
         </div>

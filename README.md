@@ -36,14 +36,23 @@ Models real-time & historical traffic flow across 10 essential factors:
   - 🔴 **Cluster 3**: Critical Congestion / Gridlock
   - 🟣 **Cluster 4**: Irregular Anomaly Event
 
-### 3. 🗺️ Interactive Map & A* Smart Route Optimizer
-- Interactive Leaflet map powered by CartoDB Voyager light tiles.
-- Segment polylines dynamically color-coded by assigned K-Means cluster tier.
+### 3. 🗺️ Real Street Navigation & A* Smart Route Optimizer
+- Interactive Leaflet map powered by **OpenStreetMap high-detail street tiles** and **OSRM (Open Source Routing Machine) Driving API**.
+- Fetches **100% real street driving geometry** (hundreds of real turn-by-turn road coordinates along actual asphalt highways, underpasses, and service lanes).
 - **A* Smart Pathfinding Engine** comparing 3 route choices:
   1. **K-Means ML Smart Route** (Avoids bottleneck clusters & monsoon delays)
   2. **Shortest Physical Distance Path**
   3. **Historical Pattern Route**
 - Turn-by-turn guidance and delay savings metrics.
+
+### 4. 📊 Real Sensor Dataset (`notebooks/Traffic_Flow_Dataset.csv`)
+The project ingests 15,000 real sensor records containing **32 granular telemetry fields**:
+- **Sensor Identifiers**: `Record_ID`, `Sensor_ID`, `Road_Segment_ID`, `Intersection_ID`
+- **Time & Calendar**: `Timestamp`, `Day_of_Week`, `Hour_of_Day`, `Weekend_Flag`
+- **Traffic Telemetry**: `Traffic_Volume`, `Vehicle_Speed_kmph`, `Road_Occupancy_Percent`, `Vehicle_Density`, `Travel_Time_sec`, `Queue_Length_m`, `Lane_Count`, `Lane_Utilization_Percent`, `Signal_Delay_sec`
+- **Weather & Environment**: `Weather_Condition`, `Temperature_C`, `Humidity_Percent`, `Visibility_m`, `Road_Surface`
+- **IoT Hardware Telemetry**: `GPS_Vehicle_Count`, `IoT_Device_Count`, `Camera_Detection_Count`
+- **Incidents & Historical Pattern**: `Incident_Flag`, `Special_Event`, `Historical_Flow_5min`, `Historical_Flow_10min`, `Historical_Flow_15min`, `Congestion_Level`, `Future_Traffic_Flow`
 
 ### 4. 📍 Gurgaon Hotspot Micro-Level Deep Dive
 Inspect location-specific, detailed micro-level traffic analytics for major Gurgaon hubs:
