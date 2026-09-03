@@ -5,12 +5,12 @@
 
 // Real Gurgaon (Gurugram) Key Interchange Nodes & Landmarks
 export const CITY_NODES = [
-  { id: 'N1', name: 'Sirhaul Border (Delhi-Gurgaon Entry)', lat: 28.5039, lng: 77.0970 },
-  { id: 'N2', name: 'Shankar Chowk (Cyber City Hub)', lat: 28.4950, lng: 77.0885 },
-  { id: 'N3', name: 'IFFCO Chowk Interchange', lat: 28.4720, lng: 77.0725 },
-  { id: 'N4', name: 'Rajiv Chowk (NH-48 Central)', lat: 28.4595, lng: 77.0325 },
-  { id: 'N5', name: 'Hero Honda Chowk (NH-48 Expressway)', lat: 28.4410, lng: 77.0060 },
-  { id: 'N6', name: 'Kherki Daula Toll Plaza', lat: 28.3960, lng: 76.9690 },
+  { id: 'N1', name: 'Sirhaul Border (Delhi-Gurgaon Entry)', lat: 28.5020, lng: 77.0950 },
+  { id: 'N2', name: 'Shankar Chowk (Cyber City Flyover)', lat: 28.4940, lng: 77.0870 },
+  { id: 'N3', name: 'IFFCO Chowk Interchange', lat: 28.4715, lng: 77.0720 },
+  { id: 'N4', name: 'Rajiv Chowk (NH-48 Central Underpass)', lat: 28.4590, lng: 77.0320 },
+  { id: 'N5', name: 'Hero Honda Chowk (NH-48 Main Line)', lat: 28.4405, lng: 77.0055 },
+  { id: 'N6', name: 'Kherki Daula Toll Plaza', lat: 28.3955, lng: 76.9685 },
   { id: 'N7', name: 'Millennium City Centre Metro (HUDA)', lat: 28.4590, lng: 77.0720 },
   { id: 'N8', name: 'Golf Course Road (Genpact Crossing)', lat: 28.4700, lng: 77.1000 },
   { id: 'N9', name: 'Golf Course Extension (Sector 56)', lat: 28.4280, lng: 77.1020 },
