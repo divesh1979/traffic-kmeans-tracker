@@ -41,53 +41,39 @@ export const INITIAL_SEGMENTS = [
   { id: 'S16', name: 'Dwarka Expressway to Hero Honda Link', from: 'N12', to: 'N5', distanceKm: 5.1, lanes: 3, speedLimit: 75, controlType: 1 }
 ];
 
+import realTrafficData from './realTrafficData.json';
+
 /**
- * Generate simulated metrics for the 10 traffic factors on each segment
+ * Generate simulated metrics for the 10 traffic factors on each segment using Traffic_Flow_Dataset.csv
  */
 export function generateSegmentTelemetry(segment, envConfig = {}) {
+  const realData = realTrafficData[segment.id] || {};
+  
   const {
-    timeOfDay = 17, // 5 PM peak hour default
-    dayOfWeek = 2,  // Tuesday
-    seasonality = 1, // Spring
-    precipitation = 0, // 0: Clear, 1: Rain, 2: Heavy Rain, 3: Snow
+    timeOfDay = 17,
+    dayOfWeek = 2,
+    seasonality = 1,
+    precipitation = 0,
     rushHourMultiplier = 1.0,
-    vehicleMixHeavy = 15 // % heavy trucks/buses
+    vehicleMixHeavy = 15
   } = envConfig;
 
-  // Peak hour factors (7-9 AM and 4-7 PM)
+  // Real sensor baselines from Traffic_Flow_Dataset.csv
+  const baseVolume = realData.volume || 1400;
+  const baseSpeed = realData.speed || 45;
+  const baseDensity = realData.density || 50;
+
+  // Environmental modifiers
   const isMorningPeak = timeOfDay >= 7 && timeOfDay <= 9;
   const isEveningPeak = timeOfDay >= 16 && timeOfDay <= 19;
-  const peakFactor = (isMorningPeak || isEveningPeak) ? 1.6 * rushHourMultiplier : 0.7;
-
-  // Weekend vs Weekday factor
-  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-  const dayFactor = isWeekend ? 0.65 : 1.1;
-
-  // Weather penalty on speed & density
+  const peakFactor = (isMorningPeak || isEveningPeak) ? 1.4 * rushHourMultiplier : 0.8;
   const weatherSpeedPenalty = precipitation === 0 ? 1.0 : precipitation === 1 ? 0.85 : precipitation === 2 ? 0.65 : 0.45;
-  const weatherDensityMultiplier = 1 + precipitation * 0.15;
 
-  // Base road capacity (veh/hr)
+  const volume = Math.round(baseVolume * peakFactor);
+  const speed = Math.max(8, Math.round(baseSpeed * weatherSpeedPenalty));
+  const density = Math.round(baseDensity * (volume / (baseVolume || 1)));
   const capacity = segment.lanes * 1100;
-
-  // Bottleneck tendency based on control devices (0: highway, 1: roundabout, 2: signal, 3: toll/stop)
-  const controlPenalty = segment.controlType * 0.12;
-
-  // Seeded variation per segment
-  const baseVolumeDemand = (capacity * 0.5) * peakFactor * dayFactor + (segment.id.charCodeAt(1) * 35);
-  const volume = Math.min(Math.round(baseVolumeDemand * (0.85 + Math.random() * 0.3)), Math.round(capacity * 1.3));
-
-  // Volume-to-Capacity ratio (V/C)
-  const vcRatio = volume / capacity;
-
-  // Speed calculation using Greenshields fundamental traffic relationship
-  const baseFreeSpeed = segment.speedLimit;
-  const speedDecrease = Math.pow(vcRatio, 1.8) * (baseFreeSpeed * 0.6) + (controlPenalty * 15);
-  const speed = Math.max(8, Math.round((baseFreeSpeed - speedDecrease) * weatherSpeedPenalty + (Math.random() * 4 - 2)));
-
-  // Density = Volume / Speed (veh/km)
-  const rawDensity = (volume / Math.max(speed, 5));
-  const density = Math.round(rawDensity * weatherDensityMultiplier);
+  const vcRatio = parseFloat((volume / capacity).toFixed(2));
 
   return {
     id: segment.id,
@@ -98,20 +84,21 @@ export function generateSegmentTelemetry(segment, envConfig = {}) {
     lanes: segment.lanes,
     speedLimit: segment.speedLimit,
     
-    // The 10 Core Traffic Flow Factors:
-    volume,             // 1. Volume (Flow Rate in veh/hr)
-    speed,              // 2. Speed (Average actual speed km/h)
-    density,            // 3. Density (Vehicles per km)
-    timeOfDay,          // 4. Time of Day (0-23 hours)
-    dayOfWeek,          // 5. Day of the Week (0-6)
-    seasonality,        // 6. Seasonality (0-3)
-    precipitation,      // 7. Precipitation (0: Clear, 1: Rain, 2: Heavy Rain, 3: Snow)
-    capacity,           // 8. Road Capacity (veh/hr limit)
-    controlDevices: segment.controlType, // 9. Control Devices (0: Highway, 1: Roundabout, 2: Signal, 3: Toll)
-    vehicleMix: vehicleMixHeavy,          // 10. Vehicle Mix (% heavy vehicles)
+    // Core Traffic Flow Factors from Traffic_Flow_Dataset.csv:
+    volume,
+    speed,
+    density,
+    queueMeters: realData.queueMeters || 120,
+    signalDelaySec: realData.signalDelaySec || 45,
+    timeOfDay,
+    dayOfWeek,
+    seasonality,
+    precipitation,
+    capacity,
+    controlDevices: segment.controlType,
+    vehicleMix: vehicleMixHeavy,
 
-    // Derived operational stats
-    vcRatio: parseFloat(vcRatio.toFixed(2)),
+    vcRatio,
     estimatedTravelMinutes: parseFloat(((segment.distanceKm / Math.max(speed, 5)) * 60).toFixed(1)),
     isAnomaly: false
   };

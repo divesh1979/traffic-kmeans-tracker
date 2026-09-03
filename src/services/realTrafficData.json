@@ -1,0 +1,130 @@
+{
+  "S1": {
+    "volume": 996,
+    "speed": 60,
+    "density": 55,
+    "queueMeters": 111.1,
+    "signalDelaySec": 55.9,
+    "lanes": 3
+  },
+  "S2": {
+    "volume": 978,
+    "speed": 62,
+    "density": 54,
+    "queueMeters": 108.3,
+    "signalDelaySec": 54.6,
+    "lanes": 3
+  },
+  "S3": {
+    "volume": 977,
+    "speed": 62,
+    "density": 54,
+    "queueMeters": 109.1,
+    "signalDelaySec": 54.2,
+    "lanes": 3
+  },
+  "S4": {
+    "volume": 926,
+    "speed": 63,
+    "density": 51,
+    "queueMeters": 103.8,
+    "signalDelaySec": 52.3,
+    "lanes": 3
+  },
+  "S5": {
+    "volume": 966,
+    "speed": 62,
+    "density": 53,
+    "queueMeters": 108.4,
+    "signalDelaySec": 54.7,
+    "lanes": 3
+  },
+  "S6": {
+    "volume": 1023,
+    "speed": 60,
+    "density": 56,
+    "queueMeters": 113.9,
+    "signalDelaySec": 57.1,
+    "lanes": 3
+  },
+  "S7": {
+    "volume": 913,
+    "speed": 63,
+    "density": 50,
+    "queueMeters": 101.7,
+    "signalDelaySec": 51.3,
+    "lanes": 3
+  },
+  "S8": {
+    "volume": 1005,
+    "speed": 61,
+    "density": 56,
+    "queueMeters": 113.2,
+    "signalDelaySec": 56.4,
+    "lanes": 3
+  },
+  "S9": {
+    "volume": 940,
+    "speed": 62,
+    "density": 52,
+    "queueMeters": 105.2,
+    "signalDelaySec": 53.3,
+    "lanes": 3
+  },
+  "S10": {
+    "volume": 954,
+    "speed": 63,
+    "density": 52,
+    "queueMeters": 106.4,
+    "signalDelaySec": 53.5,
+    "lanes": 3
+  },
+  "S11": {
+    "volume": 948,
+    "speed": 63,
+    "density": 52,
+    "queueMeters": 106.5,
+    "signalDelaySec": 53.6,
+    "lanes": 3
+  },
+  "S12": {
+    "volume": 925,
+    "speed": 64,
+    "density": 51,
+    "queueMeters": 102.6,
+    "signalDelaySec": 51.6,
+    "lanes": 3
+  },
+  "S13": {
+    "volume": 912,
+    "speed": 63,
+    "density": 51,
+    "queueMeters": 102.1,
+    "signalDelaySec": 51.0,
+    "lanes": 3
+  },
+  "S14": {
+    "volume": 957,
+    "speed": 63,
+    "density": 53,
+    "queueMeters": 106.3,
+    "signalDelaySec": 53.2,
+    "lanes": 3
+  },
+  "S15": {
+    "volume": 1006,
+    "speed": 61,
+    "density": 56,
+    "queueMeters": 112.2,
+    "signalDelaySec": 55.8,
+    "lanes": 3
+  },
+  "S16": {
+    "volume": 984,
+    "speed": 62,
+    "density": 54,
+    "queueMeters": 109.4,
+    "signalDelaySec": 54.6,
+    "lanes": 3
+  }
+}
