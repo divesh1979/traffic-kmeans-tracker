@@ -70,9 +70,8 @@ export default function TrafficMap({
 
     const polylines = [];
     routeData.pathSegments.forEach(seg => {
-      const fromPos = getNodePos(seg.from);
-      const toPos = getNodePos(seg.to);
-      polylines.push([fromPos, toPos]);
+      const coords = seg.waypoints || [getNodePos(seg.from), getNodePos(seg.to)];
+      polylines.push(coords);
     });
     return polylines;
   };
@@ -102,8 +101,7 @@ export default function TrafficMap({
 
         {/* Base Traffic Road Segments (Color-coded by K-Means Cluster) */}
         {segments.map(seg => {
-          const fromPos = getNodePos(seg.from);
-          const toPos = getNodePos(seg.to);
+          const polylineCoords = seg.waypoints || [getNodePos(seg.from), getNodePos(seg.to)];
           const isSelected = selectedSegment?.id === seg.id;
           const strokeWidth = isSelected ? 8 : (seg.lanes * 1.8 + 2);
 
@@ -112,9 +110,9 @@ export default function TrafficMap({
               {/* Glow background for anomalies */}
               {seg.isAnomaly && (
                 <Polyline
-                  positions={[fromPos, toPos]}
+                  positions={polylineCoords}
                   pathOptions={{
-                    color: '#a855f7',
+                    color: '#9333ea',
                     weight: strokeWidth + 6,
                     opacity: 0.5,
                     dashArray: '8, 8'
@@ -122,13 +120,13 @@ export default function TrafficMap({
                 />
               )}
 
-              {/* Core Segment Line */}
+              {/* Core Segment Curved Line */}
               <Polyline
-                positions={[fromPos, toPos]}
+                positions={polylineCoords}
                 pathOptions={{
-                  color: seg.clusterColor || '#10b981',
+                  color: seg.clusterColor || '#059669',
                   weight: strokeWidth,
-                  opacity: 0.88,
+                  opacity: 0.9,
                   lineCap: 'round',
                   lineJoin: 'round'
                 }}

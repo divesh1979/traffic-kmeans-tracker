@@ -21,24 +21,261 @@ export const CITY_NODES = [
   { id: 'N14', name: 'Southern Peripheral Road (SPR Interchange)', lat: 28.4050, lng: 77.0750 }
 ];
 
-// Gurgaon Road Network Topology
+// Gurgaon Road Network Topology with Multi-Point Physical Highway Curves
 export const INITIAL_SEGMENTS = [
-  { id: 'S1', name: 'Delhi-Gurgaon Expressway (Sirhaul to Cyber City)', from: 'N1', to: 'N2', distanceKm: 2.2, lanes: 5, speedLimit: 80, controlType: 0 },
-  { id: 'S2', name: 'NH-48 Cyber City to IFFCO Chowk', from: 'N2', to: 'N3', distanceKm: 3.1, lanes: 4, speedLimit: 80, controlType: 0 },
-  { id: 'S3', name: 'NH-48 Main Line (IFFCO Chowk to Rajiv Chowk)', from: 'N3', to: 'N4', distanceKm: 4.5, lanes: 4, speedLimit: 80, controlType: 0 },
-  { id: 'S4', name: 'NH-48 Expressway (Rajiv Chowk to Hero Honda Chowk)', from: 'N4', to: 'N5', distanceKm: 3.4, lanes: 4, speedLimit: 85, controlType: 0 },
-  { id: 'S5', name: 'NH-48 Southern Arterial (Hero Honda to Kherki Daula Toll)', from: 'N5', to: 'N6', distanceKm: 6.2, lanes: 4, speedLimit: 90, controlType: 3 }, // Toll control
-  { id: 'S6', name: 'Cyber City Rapid Metro Corridor', from: 'N2', to: 'N13', distanceKm: 1.8, lanes: 3, speedLimit: 50, controlType: 2 },
-  { id: 'S7', name: 'Golf Course Road 16-Lane Expressway', from: 'N13', to: 'N8', distanceKm: 2.5, lanes: 4, speedLimit: 70, controlType: 0 }, // Signal free underpasses
-  { id: 'S8', name: 'Golf Course Extension Corridor', from: 'N8', to: 'N9', distanceKm: 4.8, lanes: 3, speedLimit: 65, controlType: 1 },
-  { id: 'S9', name: 'Sohna Road Spine (Rajiv Chowk to Subhash Chowk)', from: 'N4', to: 'N10', distanceKm: 3.0, lanes: 3, speedLimit: 50, controlType: 2 },
-  { id: 'S10', name: 'Sohna Road Commercial Belt (Subhash Chowk to Sec 48)', from: 'N10', to: 'N11', distanceKm: 2.6, lanes: 3, speedLimit: 55, controlType: 2 },
-  { id: 'S11', name: 'HUDA Metro Connector (IFFCO to Millennium City Centre)', from: 'N3', to: 'N7', distanceKm: 1.6, lanes: 2, speedLimit: 45, controlType: 2 },
-  { id: 'S12', name: 'Millennium Metro to Subhash Chowk Arterial', from: 'N7', to: 'N10', distanceKm: 4.2, lanes: 2, speedLimit: 50, controlType: 2 },
-  { id: 'S13', name: 'Southern Peripheral Road (SPR East-West Bypass)', from: 'N9', to: 'N14', distanceKm: 4.0, lanes: 3, speedLimit: 75, controlType: 1 },
-  { id: 'S14', name: 'SPR Extension to Kherki Daula Toll', from: 'N14', to: 'N6', distanceKm: 5.5, lanes: 3, speedLimit: 80, controlType: 0 },
-  { id: 'S15', name: 'Dwarka Expressway Northern Link', from: 'N1', to: 'N12', distanceKm: 7.8, lanes: 4, speedLimit: 90, controlType: 0 },
-  { id: 'S16', name: 'Dwarka Expressway to Hero Honda Link', from: 'N12', to: 'N5', distanceKm: 5.1, lanes: 3, speedLimit: 75, controlType: 1 }
+  { 
+    id: 'S1', 
+    name: 'Delhi-Gurgaon Expressway (Sirhaul to Cyber City)', 
+    from: 'N1', 
+    to: 'N2', 
+    distanceKm: 2.2, 
+    lanes: 5, 
+    speedLimit: 80, 
+    controlType: 0,
+    waypoints: [
+      [28.5020, 77.0950],
+      [28.4995, 77.0925],
+      [28.4965, 77.0895],
+      [28.4940, 77.0870]
+    ]
+  },
+  { 
+    id: 'S2', 
+    name: 'NH-48 Cyber City to IFFCO Chowk', 
+    from: 'N2', 
+    to: 'N3', 
+    distanceKm: 3.1, 
+    lanes: 4, 
+    speedLimit: 80, 
+    controlType: 0,
+    waypoints: [
+      [28.4940, 77.0870],
+      [28.4870, 77.0815],
+      [28.4795, 77.0765],
+      [28.4715, 77.0720]
+    ]
+  },
+  { 
+    id: 'S3', 
+    name: 'NH-48 Main Line (IFFCO Chowk to Rajiv Chowk)', 
+    from: 'N3', 
+    to: 'N4', 
+    distanceKm: 4.5, 
+    lanes: 4, 
+    speedLimit: 80, 
+    controlType: 0,
+    waypoints: [
+      [28.4715, 77.0720],
+      [28.4680, 77.0620],
+      [28.4635, 77.0465],
+      [28.4590, 77.0320]
+    ]
+  },
+  { 
+    id: 'S4', 
+    name: 'NH-48 Expressway (Rajiv Chowk to Hero Honda Chowk)', 
+    from: 'N4', 
+    to: 'N5', 
+    distanceKm: 3.4, 
+    lanes: 4, 
+    speedLimit: 85, 
+    controlType: 0,
+    waypoints: [
+      [28.4590, 77.0320],
+      [28.4520, 77.0210],
+      [28.4460, 77.0125],
+      [28.4405, 77.0055]
+    ]
+  },
+  { 
+    id: 'S5', 
+    name: 'NH-48 Southern Arterial (Hero Honda to Kherki Daula Toll)', 
+    from: 'N5', 
+    to: 'N6', 
+    distanceKm: 6.2, 
+    lanes: 4, 
+    speedLimit: 90, 
+    controlType: 3,
+    waypoints: [
+      [28.4405, 77.0055],
+      [28.4280, 76.9920],
+      [28.4120, 76.9800],
+      [28.3955, 76.9685]
+    ]
+  },
+  { 
+    id: 'S6', 
+    name: 'Cyber City Rapid Metro Corridor', 
+    from: 'N2', 
+    to: 'N13', 
+    distanceKm: 1.8, 
+    lanes: 3, 
+    speedLimit: 50, 
+    controlType: 2,
+    waypoints: [
+      [28.4940, 77.0870],
+      [28.4870, 77.0840],
+      [28.4795, 77.0795]
+    ]
+  },
+  { 
+    id: 'S7', 
+    name: 'Golf Course Road 16-Lane Expressway', 
+    from: 'N13', 
+    to: 'N8', 
+    distanceKm: 2.5, 
+    lanes: 4, 
+    speedLimit: 70, 
+    controlType: 0,
+    waypoints: [
+      [28.4795, 77.0795],
+      [28.4760, 77.0880],
+      [28.4725, 77.0945],
+      [28.4695, 77.0990]
+    ]
+  },
+  { 
+    id: 'S8', 
+    name: 'Golf Course Extension Corridor', 
+    from: 'N8', 
+    to: 'N9', 
+    distanceKm: 4.8, 
+    lanes: 3, 
+    speedLimit: 65, 
+    controlType: 1,
+    waypoints: [
+      [28.4695, 77.0990],
+      [28.4560, 77.0998],
+      [28.4410, 77.1005],
+      [28.4275, 77.1015]
+    ]
+  },
+  { 
+    id: 'S9', 
+    name: 'Sohna Road Spine (Rajiv Chowk to Subhash Chowk)', 
+    from: 'N4', 
+    to: 'N10', 
+    distanceKm: 3.0, 
+    lanes: 3, 
+    speedLimit: 50, 
+    controlType: 2,
+    waypoints: [
+      [28.4590, 77.0320],
+      [28.4500, 77.0355],
+      [28.4425, 77.0385],
+      [28.4345, 77.0415]
+    ]
+  },
+  { 
+    id: 'S10', 
+    name: 'Sohna Road Commercial Belt (Subhash Chowk to Sec 48)', 
+    from: 'N10', 
+    to: 'N11', 
+    distanceKm: 2.6, 
+    lanes: 3, 
+    speedLimit: 55, 
+    controlType: 2,
+    waypoints: [
+      [28.4345, 77.0415],
+      [28.4250, 77.0405],
+      [28.4180, 77.0400],
+      [28.4115, 77.0395]
+    ]
+  },
+  { 
+    id: 'S11', 
+    name: 'HUDA Metro Connector (IFFCO to Millennium City Centre)', 
+    from: 'N3', 
+    to: 'N7', 
+    distanceKm: 1.6, 
+    lanes: 2, 
+    speedLimit: 45, 
+    controlType: 2,
+    waypoints: [
+      [28.4715, 77.0720],
+      [28.4650, 77.0722],
+      [28.4595, 77.0725]
+    ]
+  },
+  { 
+    id: 'S12', 
+    name: 'Millennium Metro to Subhash Chowk Arterial', 
+    from: 'N7', 
+    to: 'N10', 
+    distanceKm: 4.2, 
+    lanes: 2, 
+    speedLimit: 50, 
+    controlType: 2,
+    waypoints: [
+      [28.4595, 77.0725],
+      [28.4480, 77.0580],
+      [28.4345, 77.0415]
+    ]
+  },
+  { 
+    id: 'S13', 
+    name: 'Southern Peripheral Road (SPR East-West Bypass)', 
+    from: 'N9', 
+    to: 'N14', 
+    distanceKm: 4.0, 
+    lanes: 3, 
+    speedLimit: 75, 
+    controlType: 1,
+    waypoints: [
+      [28.4275, 77.1015],
+      [28.4140, 77.0950],
+      [28.4060, 77.0850],
+      [28.4045, 77.0745]
+    ]
+  },
+  { 
+    id: 'S14', 
+    name: 'SPR Extension to Kherki Daula Toll', 
+    from: 'N14', 
+    to: 'N6', 
+    distanceKm: 5.5, 
+    lanes: 3, 
+    speedLimit: 80, 
+    controlType: 0,
+    waypoints: [
+      [28.4045, 77.0745],
+      [28.4010, 77.0300],
+      [28.3980, 76.9950],
+      [28.3955, 76.9685]
+    ]
+  },
+  { 
+    id: 'S15', 
+    name: 'Dwarka Expressway Northern Link', 
+    from: 'N1', 
+    to: 'N12', 
+    distanceKm: 7.8, 
+    lanes: 4, 
+    speedLimit: 90, 
+    controlType: 0,
+    waypoints: [
+      [28.5020, 77.0950],
+      [28.5050, 77.0500],
+      [28.4960, 77.0150],
+      [28.4805, 76.9945]
+    ]
+  },
+  { 
+    id: 'S16', 
+    name: 'Dwarka Expressway to Hero Honda Link', 
+    from: 'N12', 
+    to: 'N5', 
+    distanceKm: 5.1, 
+    lanes: 3, 
+    speedLimit: 75, 
+    controlType: 1,
+    waypoints: [
+      [28.4805, 76.9945],
+      [28.4650, 76.9980],
+      [28.4510, 77.0015],
+      [28.4405, 77.0055]
+    ]
+  }
 ];
 
 import realTrafficData from './realTrafficData.json';
