@@ -1,126 +1,49 @@
-# 🚦 TrafficPulse: Gurgaon K-Means Live Traffic Congestion Tracker & Route Optimizer
+# TrafficPulse: Traffic Routing & Congestion Prediction System
 
-[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)](https://vitejs.dev/)
-[![React](https://img.shields.io/badge/React-18.2-61DAFB?logo=react)](https://reactjs.org/)
-[![Leaflet](https://img.shields.io/badge/Leaflet-1.9-199900?logo=leaflet)](https://leafletjs.com/)
-[![Chart.js](https://img.shields.io/badge/Chart.js-4.4-FF6384?logo=chartdotjs)](https://www.chartjs.org/)
-[![Machine Learning](https://img.shields.io/badge/Algorithm-K--Means%20Clustering-blueviolet)]()
-
-**TrafficPulse** is a modern, mobile-responsive web application designed to track real-time traffic congestion, cluster urban road segments using multi-factor machine learning (K-Means Clustering), recommend optimal congestion-avoidance driving routes, and analyze micro-level hotspot metrics for **Gurgaon (Gurugram), India**.
+TrafficPulse is a web application and machine learning analysis framework designed for urban traffic congestion monitoring, K-Means clustering, and A* pathfinding route optimization on road networks.
 
 ---
 
-## 🌟 Key Features
+## Technical Overview
 
-### 1. 📊 Multi-Factor Traffic Engine (10 Factors)
-Models real-time & historical traffic flow across 10 essential factors:
-- **Volume (Flow Rate - veh/hr)**
-- **Speed (Actual average actual speed km/h)**
-- **Density (Vehicles per km)**
-- **Time of Day (00:00 - 23:00 with morning/evening rush hour detection)**
-- **Day of Week (Weekday commute vs. Weekend leisure)**
-- **Seasonality & Holiday Demand Multiplier**
-- **Precipitation (Clear, Light Rain, Heavy Rain, Snow)**
-- **Road Design Capacity (Lanes & structural limits)**
-- **Control Devices (Highway, Roundabouts, Traffic Lights, Toll Gates)**
-- **Vehicle Mix (% Heavy Freight Trucks & Buses)**
+The system ingests multi-factor traffic sensor telemetry, standardizes feature vectors using Z-score normalization, clusters road segments into congestion tiers using K-Means ML, and executes A* shortest-path graph search with OpenStreetMap OSRM real street driving geometry to calculate optimal routes.
 
-### 2. 🧠 In-Browser K-Means Machine Learning Engine
-- Standardizes feature vectors using **Z-Score Normalization** (`StandardScaler`).
-- Computes Euclidean distance in 10-dimensional feature space.
-- Calculates Within-Cluster Sum of Squares (Inertia) & Elbow Method curve ($K = 3 \text{ to } 5$).
-- Assigns road segments into distinct traffic condition tiers:
-  - 🟢 **Cluster 0**: Free Flow (Smooth Traffic)
-  - 🟡 **Cluster 1**: Moderate Traffic Flow
-  - 🟠 **Cluster 2**: Heavy Bottleneck
-  - 🔴 **Cluster 3**: Critical Congestion / Gridlock
-  - 🟣 **Cluster 4**: Irregular Anomaly Event
+### Primary Engineering Components
 
-### 3. 🗺️ Real Street Navigation & A* Smart Route Optimizer
-- Interactive Leaflet map powered by **OpenStreetMap high-detail street tiles** and **OSRM (Open Source Routing Machine) Driving API**.
-- Fetches **100% real street driving geometry** (hundreds of real turn-by-turn road coordinates along actual asphalt highways, underpasses, and service lanes).
-- **A* Smart Pathfinding Engine** comparing 3 route choices:
-  1. **K-Means ML Smart Route** (Avoids bottleneck clusters & monsoon delays)
-  2. **Shortest Physical Distance Path**
-  3. **Historical Pattern Route**
-- Turn-by-turn guidance and delay savings metrics.
+1. **Traffic Sensor Data Processing**
+   - Processes 15,000 sensor records from `Traffic_Flow_Dataset.csv`.
+   - Core telemetry fields: Traffic Volume (veh/hr), Vehicle Speed (km/h), Vehicle Density (veh/km), Standstill Queue Length (m), Signal Delay (sec), Hour of Day (0-23), Lane Count.
 
-### 4. 📊 Real Sensor Dataset (`notebooks/Traffic_Flow_Dataset.csv`)
-The project ingests 15,000 real sensor records containing **32 granular telemetry fields**:
-- **Sensor Identifiers**: `Record_ID`, `Sensor_ID`, `Road_Segment_ID`, `Intersection_ID`
-- **Time & Calendar**: `Timestamp`, `Day_of_Week`, `Hour_of_Day`, `Weekend_Flag`
+2. **K-Means Machine Learning Clustering**
+   - Standardizes numerical feature matrices with StandardScaler (Z-score: $z = \frac{x - \mu}{\sigma}$).
+   - Computes Euclidean distance across feature vectors.
+   - Evaluates cluster count $K=4$ using Within-Cluster Sum of Squares (WCSS Inertia) and Silhouette Scores.
+   - Model Evaluation Accuracy: **65.82%** classification accuracy against ground-truth congestion levels (`Low`, `Moderate`, `High`, `Severe`), with **99% recall** on severe congestion bottlenecks.
+
+3. **Routing & Pathfinding Engine**
+   - Integrates OpenStreetMap OSRM Driving Navigation API (`https://router.project-osrm.org/route/v1/driving/`) for real turn-by-turn road geometry coordinates.
+   - Executes A* search algorithm using priority queues to evaluate segment cost matrices weighted by K-Means cluster penalties, signal delays, and weather conditions.
+
+4. **Web Interface & Analytics Dashboard**
+   - Built with React, Leaflet, and Chart.js.
+   - Provides live map visualization, hotspot micro-level inspection, 24-hour hourly flow curves, and incident logging.
+
+---
+
+## Dataset Field Specification (`Traffic_Flow_Dataset.csv`)
+
+The dataset contains 15,000 sensor records across 32 schema fields:
+
+- **Identifiers**: `Record_ID`, `Sensor_ID`, `Road_Segment_ID`, `Intersection_ID`
+- **Time/Date**: `Timestamp`, `Day_of_Week`, `Hour_of_Day`, `Weekend_Flag`
 - **Traffic Telemetry**: `Traffic_Volume`, `Vehicle_Speed_kmph`, `Road_Occupancy_Percent`, `Vehicle_Density`, `Travel_Time_sec`, `Queue_Length_m`, `Lane_Count`, `Lane_Utilization_Percent`, `Signal_Delay_sec`
-- **Weather & Environment**: `Weather_Condition`, `Temperature_C`, `Humidity_Percent`, `Visibility_m`, `Road_Surface`
-- **IoT Hardware Telemetry**: `GPS_Vehicle_Count`, `IoT_Device_Count`, `Camera_Detection_Count`
-- **Incidents & Historical Pattern**: `Incident_Flag`, `Special_Event`, `Historical_Flow_5min`, `Historical_Flow_10min`, `Historical_Flow_15min`, `Congestion_Level`, `Future_Traffic_Flow`
-
-### 4. 📍 Gurgaon Hotspot Micro-Level Deep Dive
-Inspect location-specific, detailed micro-level traffic analytics for major Gurgaon hubs:
-- **Cyber City & Shankar Chowk Hub** (`N2`)
-- **IFFCO Chowk Interchange & Flyover** (`N3`)
-- **Rajiv Chowk (NH-48 Central Crossing)** (`N4`)
-- **Hero Honda Chowk & Service Road** (`N5`)
-- **Golf Course Road 16-Lane Expressway** (`N8`)
-- **Subhash Chowk / Sohna Road Commercial Hub** (`N10`)
-- **Kherki Daula Toll Plaza Corridor** (`N6`)
-
-**Micro Metrics Available**:
-- Standstill Queue Length (km) & Speed Drop Ratio.
-- Monsoon Waterlogging & Hydroplaning Vulnerability.
-- Vehicle Class Distribution (% Cars, Cabs/Autos, Buses/Shuttles, Freight Trucks).
-- 24-Hour Hourly Congestion Index vs. 7-Day Historical Pattern Chart.
-- Localized Micro-Detour Recommendation Cards.
-
-### 5. ⚠️ Irregular Condition & Anomaly Discussion Board
-- Community incident reporting tool for accidents, signal failures, and waterlogging.
-- Real-time re-clustering preview & operator discussion feed.
+- **Environment**: `Weather_Condition`, `Temperature_C`, `Humidity_Percent`, `Visibility_m`, `Road_Surface`
+- **IoT Sensors**: `GPS_Vehicle_Count`, `IoT_Device_Count`, `Camera_Detection_Count`
+- **Incidents & Forecast**: `Incident_Flag`, `Special_Event`, `Historical_Flow_5min`, `Historical_Flow_10min`, `Historical_Flow_15min`, `Congestion_Level`, `Future_Traffic_Flow`
 
 ---
 
-## 🛠️ Tech Stack & Architecture
-
-- **Frontend**: React 18, Vite
-- **Styling**: Vanilla CSS3 (Glassmorphic Light Mode Design System)
-- **Mapping**: Leaflet, React-Leaflet
-- **Data Visualization**: Chart.js, React-ChartJS-2
-- **Icons**: Lucide-React
-- **Pathfinding & ML**: Custom in-browser A* Algorithm & K-Means Clustering Engine
-
----
-
-## 🚀 Getting Started Locally
-
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v16+ recommended)
-- `npm` or `yarn`
-
-### Installation
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/<YOUR_USERNAME>/traffic-kmeans-tracker.git
-
-# 2. Navigate to project directory
-cd traffic-kmeans-tracker
-
-# 3. Install dependencies
-npm install
-
-# 4. Launch development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Building for Production
-
-```bash
-npm run build
-```
-
----
-
-## 📁 Project Structure
+## Directory Structure
 
 ```
 traffic-kmeans-tracker/
@@ -128,41 +51,56 @@ traffic-kmeans-tracker/
 ├── package.json
 ├── vite.config.js
 ├── notebooks/
-│   ├── traffic_kmeans_analysis.ipynb  # Jupyter Notebook (Python ML Implementation, EDA, Elbow Method)
-│   └── traffic_dataset_gurgaon.csv     # 10-Factor Gurgaon Traffic Flow Dataset
+│   ├── Traffic_Flow_Dataset.csv       # 15,000 record traffic sensor dataset
+│   ├── traffic_kmeans_analysis.ipynb  # Jupyter Notebook (EDA, Clustering, Accuracy % Score)
+│   ├── verify_model_accuracy.py       # Standalone Python verification script
+│   └── images/                        # Generated analysis plots (confusion matrix, elbow curve)
 ├── src/
 │   ├── main.jsx
 │   ├── App.jsx
 │   ├── index.css
 │   ├── services/
-│   │   ├── kmeansEngine.js         # Z-score scaler, K-Means clustering, Elbow method
-│   │   ├── routingEngine.js        # A* pathfinding with K-Means cluster penalty cost
-│   │   └── trafficDataGenerator.js # Gurgaon road network topology & multi-factor telemetry
+│   │   ├── kmeansEngine.js            # K-Means clustering algorithm & scaler
+│   │   ├── routingEngine.js           # A* pathfinding & OSRM API routing
+│   │   ├── trafficDataGenerator.js    # Gurgaon road graph & interchange nodes
+│   │   └── realTrafficData.json       # Parsed sensor baselines
 │   └── components/
-│       ├── Header.jsx              # App header with mobile navigation tab bar
-│       ├── TrafficMap.jsx          # Leaflet map with colored cluster polylines
-│       ├── HotspotDetail.jsx       # Micro-level detailed location analytics
-│       ├── ClusterAnalytics.jsx    # Chart.js Radar fingerprints & Elbow curve
-│       ├── RoutePlanner.jsx        # Navigation & route comparison panel
-│       ├── DataSimulator.jsx       # Environmental simulator & live telemetry feed
-│       └── AnomalyDiscussion.jsx   # Incident reporting & community feed
+│       ├── Header.jsx                 # App header & navigation
+│       ├── TrafficMap.jsx             # Leaflet street map visualizer
+│       ├── HotspotDetail.jsx          # Micro-level hotspot analytics
+│       ├── ClusterAnalytics.jsx       # Cluster charts & elbow curve
+│       ├── RoutePlanner.jsx           # Route calculation panel
+│       ├── DataSimulator.jsx          # Environmental factor controls
+│       └── AnomalyDiscussion.jsx      # Incident log portal
 └── README.md
 ```
 
 ---
 
-## 📐 Mathematical Formulations
+## Installation & Setup
 
-### 1. Z-Score Standardization
-For feature $f$ with raw value $x$:
-$$z_f = \frac{x - \mu_f}{\sigma_f} \times w_f$$
-Where $\mu_f$ is mean, $\sigma_f$ is standard deviation, and $w_f$ is feature importance weight.
+### Web Application
 
-### 2. A* Pathfinding Segment Cost
-$$\text{Cost} = \left(\frac{\text{Distance}}{\text{Speed}} \times 60\right) \times \left(1 + \text{ClusterID} \times 0.35\right) \times \text{AnomalyMultiplier} + \text{ControlDelay}$$
+```bash
+# Install dependencies
+npm install
+
+# Run local development server
+npm run dev
+
+# Build production bundle
+npm run build
+```
+
+### Python Model Verification Script
+
+```bash
+# Run model accuracy verification script (65.82% score output)
+python3 notebooks/verify_model_accuracy.py
+```
 
 ---
 
-## 📄 License
+## License
 
-This project is open-source and available under the [MIT License](LICENSE).
+MIT License. Open-source software repository.
